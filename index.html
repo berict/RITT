@@ -6,8 +6,39 @@
     <link rel="icon"
           type="image/jpg"
           href="image/favicon.jpg">
+    <style>
+        body {
+            background-image: url('http://i.imgur.com/siKf7GZ.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        #wrapper {
+            text-align: center;
+        }
+
+        .center {
+            display: inline-block;
+        }
+
+        img.overlay {
+            margin: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
-    <img src="image/background.png"/>
+<div id="wrapper">
+    <div class="center">
+        <img class="overlay" src="image/background.png"/>
+        <img class="overlay" src="image/text-middle.png"/>
+        <img class="overlay" src="image/text-top.png"/>
+    </div>
+
+    <button style="height: 50px; width: 200px;"><a href="IoExample">Start example</a></button>
+</div>
 </body>
 </html>
