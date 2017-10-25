@@ -191,6 +191,9 @@ function Car(attr) {
 	var maxVel = 80 * (80 / Math.sqrt(mass));
 	var radius = Math.sqrt( mass / Math.PI ); //1 unit of area === 1 uni of mass
 
+    var image = new Image();
+    image.src = "image/car-dmc-12.png";
+
 	var getAttr = function() {
 		return {
 			x: x,
@@ -243,7 +246,9 @@ function Car(attr) {
 		ctx.lineWidth = 5;
 
 		ctx.beginPath();
-		ctx.arc(rPos.x, rPos.y, radius, 0, 2 * Math.PI, false);
+        //ctx.arc(rPos.x, rPos.y, radius, 0, 2 * Math.PI, false);
+        //ctx.rect(rPos.x, rPos.y, 100, 200);
+        ctx.drawImage(image, rPos.x - 40, rPos.y - 85, 80, 170);
 		ctx.fill();
 		ctx.stroke();
 	};
@@ -313,9 +318,9 @@ var gameManager = (function() {
 		fitToContainer(canvasGrid);
 		fitToContainer(canvasEnt);
 
-		ctxGrid.fillStyle = '#F0FBFF';
-		ctxGrid.strokeStyle = '#BFBFBF';
-		ctxGrid.lineWidth = 1;
+        ctxGrid.fillStyle = '#161616';
+        ctxGrid.strokeStyle = '#A055FE';
+        ctxGrid.lineWidth = 2;
 
 		MouseHandler.init(document);
 
@@ -324,7 +329,7 @@ var gameManager = (function() {
 		player = new Car({
 			x: 50,
 			y: 50,
-			color: 'red',
+            color: 'black',
 			mass: 1000,
 			velX: 500,
 			velY: 1000
@@ -421,7 +426,7 @@ var gameManager = (function() {
 			}
 
 			var entAttr = ent.getAttr();
-			ctxQuadtree.fillStyle = 'red';
+            ctxQuadtree.fillStyle = 'green';
 			ctxQuadtree.fillRect(entAttr.x/20, entAttr.y/20, 3, 3);
 		}
 	};
