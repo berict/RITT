@@ -1,3 +1,4 @@
+var rottemp = 0;
 var MouseHandler = (function() {
 	var x = 0;
 	var y = 0;
@@ -193,6 +194,10 @@ function Car(attr) {
 
     var image = new Image();
     image.src = "image/car-dmc-12.png";
+
+	var rotate = function(degree){
+		image.rotate(degree);
+	}
 
 	var getAttr = function() {
 		return {
@@ -481,6 +486,9 @@ var gameManager = (function() {
 		removeEntity: removeEntity
 	};
 }());
+var rad2deg = (function(r){
+	return r/Math.PI*180;
+})
 
 
 var Camera = (function() {
@@ -500,10 +508,24 @@ var Camera = (function() {
 	};
 
 	var update = function() {
-		var rotateDegree = Math.atan2(MouseHandler.getPos().y-document.body.clientWidth/2,MouseHandler.getPos().x-document.body.clientHeight/2);
-		console.log(MouseHandler.getPos().y-document.body.clientWidth/2);
-		console.log(MouseHandler.getPos().x-document.body.clientHeight/2);
-		console.log(rotateDegree);
+		var rotateDegree = rad2deg(Math.atan2(MouseHandler.getPos().y-document.body.clientHeight/2,(MouseHandler.getPos().x-document.body.clientWidth/2) * -1)); //아직 부정확한.
+		if(rotateDegree <= -90 && rotateDegree >= -180) //오일러 함수를 구현- 검증되지는 않음
+		{
+			rottemp = (rotateDegree*-1)-90;
+		}
+		else if(rotateDegree >= 90 && rotateDegree <= 180)
+		{
+			rottemp = 270-rotateDegree;
+		}
+		else if(rotateDegree >= 0 && rotateDegree < 90)
+		{
+			rottemp = 270-rotateDegree;
+		}
+		else if(rotateDegree<=-0 && rotateDegree > -90)
+		{
+			rottemp = (rotateDegree*-1)+270;
+		}
+		console.log(rottemp);
 		var plyrAttr = player.getAttr();
 		width = ctx.canvas.width;
 		height = ctx.canvas.height;
