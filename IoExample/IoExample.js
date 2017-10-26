@@ -1,4 +1,3 @@
-var rottemp = 0;
 var MouseHandler = (function() {
 	var x = 0;
 	var y = 0;
@@ -188,16 +187,13 @@ function Car(attr) {
 	var velX = attr.velX || 0;
 	var velY = attr.velY || 0;
 	var droplet  = attr.droplet || false;
+    var rotation = attr.rotation || 0;
 
 	var maxVel = 80 * (80 / Math.sqrt(mass));
 	var radius = Math.sqrt( mass / Math.PI ); //1 unit of area === 1 uni of mass
 
     var image = new Image();
     image.src = "image/car-dmc-12.png";
-
-	var rotate = function(degree){
-		image.rotate(degree);
-	}
 
 	var getAttr = function() {
 		return {
@@ -208,6 +204,7 @@ function Car(attr) {
 			color: color,
 			velX: velX,
 			velY: velY,
+            rotation: rotation,
 			maxVel: maxVel
 		};
 	};
@@ -219,7 +216,12 @@ function Car(attr) {
 		color = (attr.color !== undefined)? attr.color: color;
 		velX = (attr.velX !== undefined)? attr.velX: velX;
 		velY = (attr.velY !== undefined)? attr.velY: velY;
-	};
+        rotation = (attr.rotation !== undefined) ? attr.rotation : rotation;
+    };
+
+    var setRotation = function (value) {
+        rotation = (value !== undefined) ? value : rotation;
+    };
 
 	var incMass = function(dMass) {
 		mass += dMass;
@@ -253,9 +255,12 @@ function Car(attr) {
 		ctx.beginPath();
         //ctx.arc(rPos.x, rPos.y, radius, 0, 2 * Math.PI, false);
         //ctx.rect(rPos.x, rPos.y, 100, 200);
+        ctx.translate(camSize.width / 2, camSize.height / 2);
+        ctx.rotate(rotation * Math.PI / 180);
+        console.log("Rotate: " + rotation + ", Image draw at [" + (rPos.x - 40) + ", " + (rPos.y - 85) + "]");
         ctx.drawImage(image, rPos.x - 40, rPos.y - 85, 80, 170);
-		ctx.fill();
-		ctx.stroke();
+        //ctx.fill();
+        //ctx.stroke();
 	};
 
 	var update = !droplet && function(dTime) {
@@ -276,6 +281,7 @@ function Car(attr) {
 		getBounds: getBounds,
 		getAttr: getAttr,
 		setAttr: setAttr,
+        setRotation: setRotation,
 		incMass: incMass,
 		intersects: intersects,
 		draw: draw,
@@ -508,25 +514,28 @@ var Camera = (function() {
 	};
 
 	var update = function() {
+        var plyrAttr = player.getAttr();
+
 		var rotateDegree = rad2deg(Math.atan2(MouseHandler.getPos().y-document.body.clientHeight/2,(MouseHandler.getPos().x-document.body.clientWidth/2) * -1)); //아직 부정확한.
+
 		if(rotateDegree <= -90 && rotateDegree >= -180) //오일러 함수를 구현- 검증되지는 않음
 		{
-			rottemp = (rotateDegree*-1)-90;
+            player.setRotation((rotateDegree * -1) - 90);
 		}
 		else if(rotateDegree >= 90 && rotateDegree <= 180)
 		{
-			rottemp = 270-rotateDegree;
+            player.setRotation(270 - rotateDegree);
 		}
 		else if(rotateDegree >= 0 && rotateDegree < 90)
 		{
-			rottemp = 270-rotateDegree;
+            player.setRotation(270 - rotateDegree);
 		}
 		else if(rotateDegree<=-0 && rotateDegree > -90)
 		{
-			rottemp = (rotateDegree*-1)+270;
-		}
-		console.log(rottemp);
-		var plyrAttr = player.getAttr();
+            player.setRotation((rotateDegree * -1) + 270);
+        }
+        //console.log(plyrAttr.rotation);
+
 		width = ctx.canvas.width;
 		height = ctx.canvas.height;
 
