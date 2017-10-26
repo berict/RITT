@@ -6,6 +6,12 @@
     <link rel="icon"
           type="image/jpg"
           href="image/favicon.jpg">
+
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/vaporwave.css">
+    <link rel="stylesheet" href="css/win98.css">
+    <link rel="stylesheet" href="css/demo.css">
+
     <style>
         body {
             background-image: url('http://i.imgur.com/siKf7GZ.png');
@@ -15,45 +21,49 @@
             overflow: hidden;
         }
 
-        .imgdiv{
-          width: 100%;
-          height: 70%;
+        .center {
+            margin: auto;
+            width: 1200px;
+            height: 900px;
         }
 
-        .wrapper {
+        #crossfader img {
+            position: absolute;
+        }
+
+        #content div {
+            margin: auto;
             text-align: center;
-            width: 100%;
-            height: 100%;
-        }
-
-
-        img.overlay {
-          max-width: 100%;
-          height: auto;
-          margin: auto;
-          position: fixed;
-          left: 0;
-          right: 0;
-        }
-
-        .userdiv{
-          width: 100%;
-          float: left;
-          position: fixed;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+
 </head>
 <body>
-<div class="wrapper">
-  <div class="imgdiv">
-      <img class="overlay" src="image/background.png"/>
-      <img class="overlay" src="image/text-middle.png"/>
-      <img class="overlay" src="image/text-top.png"/>
-  </div>
-  <div>
-    <input type="text" />
-    <button style="height: 50px; width: 200px;"><a href="IoExample">Start example</a></button>
-  </div>
+<div class="center">
+    <div id="crossfader">
+        <img id="image-1" src="image/image-1.png" alt="RITT" style="z-index: 1; display: none;"/>
+        <img id="image-3" src="image/image-2.png" alt="RITT" style="z-index: 2; display: none;"/>
+        <img id="image-2" src="image/image-3.png" alt="RITT" style="z-index: 3; display: none;"/>
+    </div>
+    <div id="content" style="padding-top: 850px;">
+        <div class="vaporwave">
+            <div class="resizable window" style="width: 420px; height: 150px;">
+                <div class="header">
+                    <img class="icon" src="icon/exe.gif">
+                    RITT.exe
+                </div>
+                <div class="content">
+                    <center>
+                        <h3>YOU HAVE BEEN INFECTED!</h3>
+                        <p>Click to fix your computer NOW</p>
+                        <button>Start Scan</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
