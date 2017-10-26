@@ -12,33 +12,48 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
+            overflow: hidden;
         }
 
-        #wrapper {
+        .imgdiv{
+          width: 100%;
+          height: 70%;
+        }
+
+        .wrapper {
             text-align: center;
+            width: 100%;
+            height: 100%;
         }
 
-        .center {
-            display: inline-block;
-        }
 
         img.overlay {
-            margin: auto;
-            position: absolute;
-            left: 0;
-            right: 0;
+          max-width: 100%;
+          height: auto;
+          margin: auto;
+          position: fixed;
+          left: 0;
+          right: 0;
+        }
+
+        .userdiv{
+          width: 100%;
+          float: left;
+          position: fixed;
         }
     </style>
 </head>
 <body>
-<div id="wrapper">
-    <div class="center">
-        <img class="overlay" src="image/background.png"/>
-        <img class="overlay" src="image/text-middle.png"/>
-        <img class="overlay" src="image/text-top.png"/>
-    </div>
-
+<div class="wrapper">
+  <div class="imgdiv">
+      <img class="overlay" src="image/background.png"/>
+      <img class="overlay" src="image/text-middle.png"/>
+      <img class="overlay" src="image/text-top.png"/>
+  </div>
+  <div>
+    <input type="text" />
     <button style="height: 50px; width: 200px;"><a href="IoExample">Start example</a></button>
+  </div>
 </div>
 </body>
 </html>

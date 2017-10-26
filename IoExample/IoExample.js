@@ -500,10 +500,14 @@ var Camera = (function() {
 	};
 
 	var update = function() {
+		var rotateDegree = Math.atan2(MouseHandler.getPos().y-document.body.clientWidth/2,MouseHandler.getPos().x-document.body.clientHeight/2);
+		console.log(MouseHandler.getPos().y-document.body.clientWidth/2);
+		console.log(MouseHandler.getPos().x-document.body.clientHeight/2);
+		console.log(rotateDegree);
+		var plyrAttr = player.getAttr();
 		width = ctx.canvas.width;
 		height = ctx.canvas.height;
 
-		var plyrAttr = player.getAttr();
 		x = (plyrAttr.x - width / 2);
 		y = (plyrAttr.y - height / 2);
 	};
