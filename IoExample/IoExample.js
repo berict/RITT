@@ -269,19 +269,12 @@ function Car(attr) {
             return;
         }
 
-        ctx.fillStyle = color;
-        ctx.strokeStyle = borderColor;
-        ctx.lineWidth = 5;
-
-        ctx.beginPath();
-        //ctx.arc(rPos.x, rPos.y, radius, 0, 2 * Math.PI, false);
-        //ctx.rect(rPos.x, rPos.y, 100, 200);
+        ctx.save();
         ctx.translate(camSize.width / 2, camSize.height / 2);
         ctx.rotate(rotation * Math.PI / 180);
-        console.log("Rotate: " + rotation + ", Image draw at [" + (rPos.x - 40) + ", " + (rPos.y - 85) + "]");
-        ctx.drawImage(image, rPos.x - 40, rPos.y - 85, 80, 170);
-        //ctx.fill();
-        //ctx.stroke();
+        ctx.drawImage(image, -40, -85);
+        ctx.translate(-(camSize.width / 2), -(camSize.height / 2));
+        ctx.restore();
     };
 
     var update = !droplet && function (dTime) {
