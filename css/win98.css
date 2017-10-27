@@ -11,7 +11,7 @@
     text-transform: uppercase;
     font-0: weight;
     font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
-    color:;
+    color: black;
     text-shadow: -4px -4px 10px, 4px 4px 6px, 4px 4px 6px, -4px -4px 6px;
 }
 
@@ -42,7 +42,7 @@
 .vaporwave h5.section::before {
     content: " ";
     background-image: url("/vaporwave/img/ic-section-small.png");
-    background-repeat: none;
+    background-repeat: no-repeat;
     position: relative;
     display: block;
     float: right;
@@ -109,6 +109,7 @@
     outline: none;
     padding: 4px;
     background: #bfbfbf;
+    margin-top: 16px;
     border: 1px solid;
     border-top-color: #dfdfdf;
     border-left-color: #dfdfdf;

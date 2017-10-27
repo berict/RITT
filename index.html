@@ -28,19 +28,19 @@
 
         }
 
-        #crossfader {
+        #logo {
             position: relative;
         }
 
-        #content {
-            padding-top: 40%;
-        }
-
-        #crossfader img {
+        #logo img {
             position: absolute;
             width: 65%;
             left: 50%;
             margin-left: -32.5%;
+        }
+
+        #content {
+            padding-top: 48%;
         }
 
         #content div {
@@ -54,18 +54,17 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="index.js"></script>
-
 </head>
 <body>
 <div class="center">
-    <div id="crossfader">
+    <div id="logo">
         <img id="image-1" src="image/image-1.png" alt="RITT" style="z-index: 1; display: none;"/>
         <img id="image-3" src="image/image-2.png" alt="RITT" style="z-index: 2; display: none;"/>
         <img id="image-2" src="image/image-3.png" alt="RITT" style="z-index: 3; display: none;"/>
     </div>
     <div id="content">
         <div class="vaporwave">
-            <div class="resizable window" id="win">
+            <div class="window" id="win">
                 <div class="header">
                     <img class="icon" src="icon/exe.gif">
                     RITT.exe
@@ -73,7 +72,7 @@
                 <div class="content">
                     <center>
                         <h3>YOU HAVE BEEN INFECTED!</h3>
-                        <p>Click to fix your computer NOW</p>
+                        <input id="input-name" type="text" placeholder="Name">
                         <form method="get" action="./game">
                             <button>Start Scan</button>
                         </form>
