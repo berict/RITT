@@ -2,14 +2,14 @@ var canvasBg = document.getElementById('game');
 var ctxGame = canvasBg.getContext('2d');
 var counter = 0;
 
-var mouse = {
-    x: 0,
-    y: 0
-};
-
 var player = new Player();
 var playerImage = new Image();
 playerImage.src = "image/car-dmc-12.png";
+
+var mouse = {
+    x: player.x,
+    y: 0
+};
 
 window.addEventListener('load', function () {
     setInterval(loop, 1000 / 60);
