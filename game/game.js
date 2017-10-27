@@ -352,10 +352,10 @@ var gameManager = (function () {
         qTree = new Quadtree(0, {x: 0, y: 0, width: 5000, height: 5000});
 
         player = new Car({
-            x: 50,
-            y: 50,
+            x: 2500,
+            y: 5000,
             color: 'black',
-            mass: 1000,
+            mass: 50000,
             velX: 500,
             velY: 1000
         });
