@@ -4,7 +4,7 @@ var counter = 0;
 
 var player = new Player();
 var playerImage = new Image();
-playerImage.src = "image/car-dmc-12.png";
+playerImage.src = "image/car-mamba.png";
 
 var mouse = {
     x: player.x,

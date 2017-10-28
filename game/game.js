@@ -205,7 +205,6 @@ var texture = [
     "comet-retro-custom",
     "coquette",
     "coquette-classic",
-    "dmc-12",
     "infernus-classic",
     "JB700",
     "mamba",
