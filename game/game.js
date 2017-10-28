@@ -197,6 +197,28 @@ function Quadtree(lvl, bnds) {
     };
 }
 
+var texture = [
+    "ardent",
+    "banshee",
+    "casco",
+    "cheetah-classic",
+    "comet-retro-custom",
+    "coquette",
+    "coquette-classic",
+    "dmc-12",
+    "infernus-classic",
+    "JB700",
+    "mamba",
+    "monroe",
+    "nightshade",
+    "peyote",
+    "retinue",
+    "stinger",
+    "tampa",
+    "torero",
+    "turismo-classic"
+];
+
 function Car(attr) {
     // Player object
     attr = attr || {};
@@ -368,10 +390,12 @@ var gameManager = (function () {
 
         qTree = new Quadtree(0, {x: 0, y: 0, width: 5000, height: 5000});
 
+        var carTexture = texture[Math.floor(Math.random() * texture.length)];
+
         player = new Car({
             x: 2500,
             y: 5000,
-            texture: 'dmc-12',
+            texture: carTexture,
             mass: 25000,
             velX: 500,
             velY: 1000
