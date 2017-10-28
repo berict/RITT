@@ -553,8 +553,8 @@ var Camera = (function () {
         var playerAttr = player.getAttr();
 
         // rotation degree in radian
-        var targetY = MouseHandler.getPos().y - (height / 2);
-        var targetX = MouseHandler.getPos().x - (width / 2);
+        var targetY = MouseHandler.getPos().y - (document.body.clientHeight / 2);
+        var targetX = MouseHandler.getPos().x - (document.body.clientWidth / 2);
         var rotation = Math.atan2(targetY, targetX);
         player.setRotation(rotation);
 
