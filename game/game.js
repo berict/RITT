@@ -315,6 +315,9 @@ function Car(attr) {
     };
 }
 
+var canvasEntId = "";
+var canvasGridId = "";
+
 var gameManager = (function () {
     var canvasGrid = null;
     var canvasEnt = null;
@@ -346,7 +349,9 @@ var gameManager = (function () {
 
     var init = function (cvsGridId, cvsEntId, cvsQuadtree) {
         canvasGrid = document.getElementById(cvsGridId);
+        canvasGridId = cvsGridId;
         canvasEnt = document.getElementById(cvsEntId);
+        canvasEntId = cvsEntId;
         canvasQuadtree = document.getElementById(cvsQuadtree);
         ctxGrid = canvasGrid.getContext('2d');
         ctxEnt = canvasEnt.getContext('2d');
@@ -355,8 +360,8 @@ var gameManager = (function () {
         fitToContainer(canvasGrid);
         fitToContainer(canvasEnt);
 
-        ctxGrid.fillStyle = '#161616';
-        ctxGrid.strokeStyle = '#A055FE';
+        ctxGrid.fillStyle = '#700459';
+        ctxGrid.strokeStyle = '#FFFFFF';
         ctxGrid.lineWidth = 2;
 
         MouseHandler.init(document);
@@ -405,33 +410,37 @@ var gameManager = (function () {
     };
 
     var drawGrid = function () {
+        var element = document.getElementById(canvasGridId);
+        console.log("Grid resized [" + element.width + ", " + element.height + "]");
+        ctxGrid = element.getContext('2d');
+
+        var gridSize = 64;
         var camPos = Camera.getPos();
         var camSize = Camera.getSize();
 
-        var start = Math.floor(camPos.x / 40);
-        var relX = Camera.getRelPos({x: (start * 40), y: 0}).x;
+        var start = Math.floor(camPos.x / gridSize);
+        var relX = Camera.getRelPos({x: (start * gridSize), y: 0}).x;
 
-        var numLines = camSize.width / 40;
+        var numLines = camSize.width / gridSize;
         var i = 0;
-
 
         ctxGrid.fillRect(0, 0, canvasGrid.width, canvasGrid.height);
 
         for (i = 0; i < numLines; i += 1) {
             ctxGrid.beginPath();
-            ctxGrid.moveTo(relX + (40 * i), 0);
-            ctxGrid.lineTo(relX + (40 * i), camSize.height);
+            ctxGrid.moveTo(relX + (gridSize * i), 0);
+            ctxGrid.lineTo(relX + (gridSize * i), camSize.height);
             ctxGrid.stroke();
         }
 
-        start = Math.floor(camPos.y / 40);
-        var relY = Camera.getRelPos({x: 0, y: (start * 40)}).y;
-        numLines = camSize.height / 40;
+        start = Math.floor(camPos.y / gridSize);
+        var relY = Camera.getRelPos({x: 0, y: (start * gridSize)}).y;
+        numLines = camSize.height / gridSize;
 
         for (i = 0; i < numLines; i += 1) {
             ctxGrid.beginPath();
-            ctxGrid.moveTo(0, relY + (40 * i));
-            ctxGrid.lineTo(camSize.width, relY + (40 * i));
+            ctxGrid.moveTo(0, relY + (gridSize * i));
+            ctxGrid.lineTo(camSize.width, relY + (gridSize * i));
             ctxGrid.stroke();
         }
     };
@@ -527,14 +536,20 @@ var Camera = (function () {
     var ctx = null;
     var player = null;
 
-    var init = function (_ctx, plyr) {
+    var init = function (_ctx, _player) {
         ctx = _ctx;
-        player = plyr;
+        player = _player;
         width = ctx.canvas.width;
         height = ctx.canvas.height;
     };
 
     var update = function () {
+        var element = document.getElementById(canvasEntId);
+        console.log("Camera resized [" + element.width + ", " + element.height + "]");
+        ctx = element.getContext('2d');
+
+        width = ctx.canvas.width;
+        height = ctx.canvas.height;
         var playerAttr = player.getAttr();
 
         // rotation degree in radian
