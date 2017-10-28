@@ -198,31 +198,34 @@ function Quadtree(lvl, bnds) {
 }
 
 function Car(attr) {
+    // Player object
     attr = attr || {};
 
     var x = attr.x || 0;
     var y = attr.y || 0;
-    var mass = attr.mass || 500;
-    var color = attr.color || 'white';
-    var borderColor = attr.borderColor || 'black';
+    var mass = attr.mass || 25000;
+    var texture = attr.texture || 'dmc-12';
     var velX = attr.velX || 0;
     var velY = attr.velY || 0;
     var droplet = attr.droplet || false;
     var rotation = attr.rotation || 0;
 
+    var width = 80;
+    var height = 180;
+
     var maxVel = 80 * (80 / Math.sqrt(mass));
-    var radius = Math.sqrt(mass / Math.PI); //1 unit of area === 1 uni of mass
 
     var image = new Image();
-    image.src = "image/car-dmc-12.png";
+    image.src = "image/car-" + texture + ".png";
+
+    var halfPI = (Math.PI / 2);
 
     var getAttr = function () {
         return {
             x: x,
             y: y,
             mass: mass,
-            radius: radius,
-            color: color,
+            texture: texture,
             velX: velX,
             velY: velY,
             rotation: rotation,
@@ -234,7 +237,7 @@ function Car(attr) {
         x = (attr.x !== undefined) ? attr.x : x;
         y = (attr.y !== undefined) ? attr.y : y;
         mass = (attr.mass !== undefined) ? attr.mass : mass;
-        color = (attr.color !== undefined) ? attr.color : color;
+        texture = (attr.texture !== undefined) ? attr.texture : texture;
         velX = (attr.velX !== undefined) ? attr.velX : velX;
         velY = (attr.velY !== undefined) ? attr.velY : velY;
         rotation = (attr.rotation !== undefined) ? attr.rotation : rotation;
@@ -245,36 +248,54 @@ function Car(attr) {
     };
 
     var incMass = function (dMass) {
+        // increasing mass
         mass += dMass;
         maxVel = 100 * (100 / Math.sqrt(mass));
-        radius = Math.sqrt(mass / Math.PI);
     };
 
-    var intersects = function (ent2) {
-        var ent2Attr = ent2.getAttr();
+    var isCollided = function (rect) {
+        // collision detection:
+        // https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
 
-        var dX = Math.abs(ent2Attr.x - x);
-        var dY = Math.abs(ent2Attr.y - y);
-        var totalRadius = ent2Attr.radius + radius;
+        var rectAttr = rect.getAttr();
+        return x < rectAttr.x + rectAttr.width &&
+            x + width > rectAttr.x &&
+            y < rectAttr.y + rectAttr.height &&
+            height + y > rectAttr.y;
+    };
 
-        return (dX < totalRadius && dY < totalRadius);
+    var getRadius = function () {
+        // return half of the hypotenuses of the rect
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 2;
     };
 
     var draw = function (ctx, cam) {
         var camSize = cam.getSize();
-        var rPos = cam.getRelPos(getAttr());
+        var camRealPos = cam.getRelPos(getAttr());
 
         //if outside Cam view
-        if ((rPos.x + radius) < 0 || (rPos.y + radius) < 0 || (rPos.x - radius) > camSize.width || (rPos.y - radius) > camSize.height) {
+        if ((camRealPos.x + getRadius()) < 0 ||
+            (camRealPos.y + getRadius()) < 0 ||
+            (camRealPos.x - getRadius()) > camSize.width ||
+            (camRealPos.y - getRadius()) > camSize.height) {
             return;
         }
 
         ctx.save();
         ctx.translate(camSize.width / 2, camSize.height / 2);
-        ctx.rotate(rotation * Math.PI / 180);
-        ctx.drawImage(image, -40, -85);
+        ctx.rotate(rotation + halfPI); // render with 90 degree more rotated
+        ctx.drawImage(image, -(width / 2), -(height / 2));
         ctx.translate(-(camSize.width / 2), -(camSize.height / 2));
         ctx.restore();
+    };
+
+    var getBounds = function () {
+        return {
+            x: x - (width / 2),
+            y: y - (height / 2),
+            width: width,
+            height: height,
+        };
     };
 
     var update = !droplet && function (dTime) {
@@ -282,24 +303,15 @@ function Car(attr) {
         y += velY * dTime;
     };
 
-    var getBounds = function () {
-        return {
-            x: x - radius,
-            y: y - radius,
-            width: radius * 2,
-            height: radius * 2,
-        };
-    };
-
     return {
-        getBounds: getBounds,
         getAttr: getAttr,
         setAttr: setAttr,
         setRotation: setRotation,
         incMass: incMass,
-        intersects: intersects,
+        isCollided: isCollided,
         draw: draw,
-        update: update
+        getBounds: getBounds,
+        update: update,
     };
 }
 
@@ -354,8 +366,8 @@ var gameManager = (function () {
         player = new Car({
             x: 2500,
             y: 5000,
-            color: 'black',
-            mass: 50000,
+            texture: 'dmc-12',
+            mass: 25000,
             velX: 500,
             velY: 1000
         });
@@ -373,10 +385,10 @@ var gameManager = (function () {
         }
 
         var pAttr = player.getAttr();
-        var rPlyrPos = Camera.getRelPos(player.getAttr());
+        var rPlycamRealPos = Camera.getRelPos(player.getAttr());
         var mPos = MouseHandler.getPos();
-        var dX = mPos.x - rPlyrPos.x;
-        var dY = mPos.y - rPlyrPos.y;
+        var dX = mPos.x - rPlycamRealPos.x;
+        var dY = mPos.y - rPlycamRealPos.y;
 
         var vLength = Math.sqrt((dX * dX) + (dY * dY));
 
@@ -441,7 +453,7 @@ var gameManager = (function () {
 
         while (ent = possibleColl.pop()) {
 
-            if (player.intersects(ent)) {
+            if (player.isCollided(ent)) {
                 entMass = ent.getAttr().mass;
 
                 if (plyMass > (1.5 * entMass)) {
@@ -506,10 +518,6 @@ var gameManager = (function () {
         removeEntity: removeEntity
     };
 }());
-var rad2deg = (function (r) {
-    return r / Math.PI * 180;
-})
-
 
 var Camera = (function () {
     var x = 0;
@@ -519,7 +527,6 @@ var Camera = (function () {
     var ctx = null;
     var player = null;
 
-
     var init = function (_ctx, plyr) {
         ctx = _ctx;
         player = plyr;
@@ -528,30 +535,19 @@ var Camera = (function () {
     };
 
     var update = function () {
-        var plyrAttr = player.getAttr();
+        var playerAttr = player.getAttr();
 
-        var rotateDegree = rad2deg(Math.atan2(MouseHandler.getPos().y - document.body.clientHeight / 2, (MouseHandler.getPos().x - document.body.clientWidth / 2) * -1)); //아직 부정확한.
-
-        if (rotateDegree <= -90 && rotateDegree >= -180) //오일러 함수를 구현- 검증되지는 않음
-        {
-            player.setRotation((rotateDegree * -1) - 90);
-        }
-        else if (rotateDegree >= 90 && rotateDegree <= 180) {
-            player.setRotation(270 - rotateDegree);
-        }
-        else if (rotateDegree >= 0 && rotateDegree < 90) {
-            player.setRotation(270 - rotateDegree);
-        }
-        else if (rotateDegree <= -0 && rotateDegree > -90) {
-            player.setRotation((rotateDegree * -1) + 270);
-        }
-        //console.log(plyrAttr.rotation);
+        // rotation degree in radian
+        var targetY = MouseHandler.getPos().y - (height / 2);
+        var targetX = MouseHandler.getPos().x - (width / 2);
+        var rotation = Math.atan2(targetY, targetX);
+        player.setRotation(rotation);
 
         width = ctx.canvas.width;
         height = ctx.canvas.height;
 
-        x = (plyrAttr.x - width / 2);
-        y = (plyrAttr.y - height / 2);
+        x = (playerAttr.x - width / 2);
+        y = (playerAttr.y - height / 2);
     };
 
     var getRelPos = function (entAttr) {
@@ -590,6 +586,5 @@ var Camera = (function () {
 
 var i = 0;
 var space = 70;
-
 
 gameManager.init('canvas1', 'canvas2', 'canvas3');
