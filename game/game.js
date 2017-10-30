@@ -432,6 +432,61 @@ var gameManager = (function () {
         });
     };
 
+
+    // var getBlendColor = function (color0, color1, blendPrecent) {
+    //     // color be #XXXXXX
+    //
+    //     var r0 = parseInt("0x" + color0.substring(1, 3));
+    //     var g0 = parseInt("0x" + color0.substring(3, 5));
+    //     var b0 = parseInt("0x" + color0.substring(5, 7));
+    //
+    //     var r1 = parseInt("0x" + color1.substring(1, 3));
+    //     var g1 = parseInt("0x" + color1.substring(3, 5));
+    //     var b1 = parseInt("0x" + color1.substring(5, 7));
+    //
+    //     String blendColorHex = "#" +
+    //         getTwoDigitHexString(averageIntegerWithPercent(r0, r1, blendPercent)) +
+    //         getTwoDigitHexString(averageIntegerWithPercent(g0, g1, blendPercent)) +
+    //         getTwoDigitHexString(averageIntegerWithPercent(b0, b1, blendPercent));
+    //
+    //     return Color.parseColor(blendColorHex);
+    // }
+    //
+    // public int getBlendColor(int color0, int color1, float blendPercent) {
+    //     String colorString0 = String.format("#%06X", (0xFFFFFF & color0));
+    //     //Log.d("color0", colorString0);
+    //     String colorString1 = String.format("#%06X", (0xFFFFFF & color1));
+    //     //Log.d("color1", colorString1);
+    //
+    //     int r0 = Integer.parseInt(colorString0.substring(1, 3), 16);
+    //     int g0 = Integer.parseInt(colorString0.substring(3, 5), 16);
+    //     int b0 = Integer.parseInt(colorString0.substring(5, 7), 16);
+    //
+    //     int r1 = Integer.parseInt(colorString1.substring(1, 3), 16);
+    //     int g1 = Integer.parseInt(colorString1.substring(3, 5), 16);
+    //     int b1 = Integer.parseInt(colorString1.substring(5, 7), 16);
+    //
+    //     String blendColorHex = "#" +
+    //         getTwoDigitHexString(averageIntegerWithPercent(r0, r1, blendPercent)) +
+    //         getTwoDigitHexString(averageIntegerWithPercent(g0, g1, blendPercent)) +
+    //         getTwoDigitHexString(averageIntegerWithPercent(b0, b1, blendPercent));
+    //
+    //     return Color.parseColor(blendColorHex);
+    // }
+    //
+    // private int averageIntegerWithPercent(int num1, int num2, float percent) {
+    //     return Math.round((num1 - num2) * percent) + num2;
+    // }
+    //
+    // private String getTwoDigitHexString(int hexValue) {
+    //     String hexString = Integer.toHexString(hexValue);
+    //     //Log.d("hexStringCheck", hexString);
+    //     if (hexString.length() == 1) {
+    //         hexString = "0" + hexString;
+    //     }
+    //     return hexString;
+    // }
+
     var drawGrid = function () {
         var element = document.getElementById(canvasGridId);
         console.log("Grid resized [" + element.width + ", " + element.height + "]");
